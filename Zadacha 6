@@ -1,0 +1,51 @@
+#include <iostream>
+#include <string>
+#include <queue>
+#include <stack>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+	string result;
+	queue <int> vagoni;
+	stack <int> tupik;
+	vector <int> result;
+	int n, s = 1, cnt = 0;
+	cin >> n;
+	int num;
+	for (int i = 0; i < n; i++) {
+		cin >> num;
+		vagoni.push(num);
+	}
+	while (!vagoni.empty()) //цикл загрузки вагонов 
+	{
+		num = vagoni.front(); //загрузка вагонов в тупик
+		vagoni.pop();
+		cnt++;
+		tupik.push(num);
+		if (num == s) //при нахождении минимального номера начинаем выгрузку 
+		{
+			result += "1 ";//выгрузка из первого пути
+			result += to_string(cnt);
+			result += '\n'; //количество загруженных вагонов из первого пути в тупик
+			cnt = 0; //сброс счетчика входа
+			while ((num = tupik.top()) == s) //выгрузка вагонов из тупика на второй путь
+			{
+				tupik.pop();
+				cnt++;
+				if (s == n) break;
+				s++;
+				if (tupik.empty()) break;
+			}
+			result += "2 ";//выгрузка на второй путь
+			result += to_string(cnt);
+			result += '\n'; //количество выгруженных вагонов на второй путь 
+			cnt = 0;
+		}
+	}
+	cout << endl;
+	if (vagoni.empty() && tupik.empty()) cout << result;
+	else cout << "0";
+}
